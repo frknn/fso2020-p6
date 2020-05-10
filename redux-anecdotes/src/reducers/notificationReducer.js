@@ -1,36 +1,35 @@
 const reducer = (state = '', action) => {
   switch (action.type) {
-    case 'VOTED':
-      return `You voted '${action.content}'`      
-    
-    case 'CREATED':
-      return `You created '${action.content}'`
-    
-    case 'CLEAR':
+    case 'SET_MESSAGE':
+      return action.content
+
+    case 'CLEAR_MESSAGE':
       return ''
 
-      default:
+    default:
       return state
   }
 }
 
-export const anecdoteVoted = (content) => {
+export const setNotification = (content, duration) => {
+  return async (dispatch) => {
+    dispatch(setNotificationMessage(content))
+    setTimeout(() => {
+      dispatch(clearNotificationMessage())
+    }, duration * 1000);
+  }
+}
+
+const setNotificationMessage = (content) => {
   return {
-    type: 'VOTED',
+    type: 'SET_MESSAGE',
     content
   }
 }
 
-export const anecdoteCreated = (content) => {
+const clearNotificationMessage = () => {
   return {
-    type: 'CREATED',
-    content
-  }
-}
-
-export const clearNotification = () => {
-  return {
-    type: 'CLEAR'
+    type: 'CLEAR_MESSAGE'
   }
 }
 

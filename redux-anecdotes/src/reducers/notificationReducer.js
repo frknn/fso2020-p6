@@ -11,12 +11,19 @@ const reducer = (state = '', action) => {
   }
 }
 
+let timeoutIdArray = []
 export const setNotification = (content, duration) => {
   return async (dispatch) => {
+    let timeoutID;
     dispatch(setNotificationMessage(content))
-    setTimeout(() => {
+    timeoutID = setTimeout(() => {
       dispatch(clearNotificationMessage())
     }, duration * 1000);
+    timeoutIdArray.push(timeoutID)
+    if (timeoutIdArray.length === 2) {
+      clearTimeout(timeoutIdArray[0])
+      timeoutIdArray.shift()
+    }
   }
 }
 
